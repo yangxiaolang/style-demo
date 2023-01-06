@@ -1,0 +1,832 @@
+// stylelint-disable no-descending-specificity
+
+@use 'sass:math';
+
+@import './reset-browser';
+@import '../tailwind-preset/styles';
+@import 'node_modules/@alauda/ui/theme/style';
+@import './var';
+@import './mixins';
+@import './markdowb-body'; // todo: 因为aui-code-editor 中也使用的 https://github.com/sindresorhus/github-markdown-css。未来迁移过去
+
+@include page-color-definition;
+
+.d-block {
+  display: block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+@for $i from 1 through 8 {
+  .flex-#{$i} {
+    flex: $i !important;
+  }
+}
+
+@for $i from 0 through 12 {
+  .ml-#{$i * 2} {
+    margin-left: #{$i * 2}px !important;
+  }
+  .mr-#{$i * 2} {
+    margin-right: #{$i * 2}px !important;
+  }
+  .mt-#{$i * 2} {
+    margin-top: #{$i * 2}px !important;
+  }
+  .mb-#{$i * 2} {
+    margin-bottom: #{$i * 2}px !important;
+  }
+
+  .mx-#{$i * 2} {
+    @extend .ml-#{$i * 2};
+    @extend .mr-#{$i * 2};
+  }
+  .my-#{$i * 2} {
+    @extend .mt-#{$i * 2};
+    @extend .mb-#{$i * 2};
+  }
+
+  .m-#{$i * 2} {
+    @extend .mx-#{$i * 2};
+    @extend .my-#{$i * 2};
+  }
+
+  .pl-#{$i * 2} {
+    padding-left: #{$i * 2}px !important;
+  }
+  .pr-#{$i * 2} {
+    padding-right: #{$i * 2}px !important;
+  }
+  .pt-#{$i * 2} {
+    padding-top: #{$i * 2}px !important;
+  }
+  .pb-#{$i * 2} {
+    padding-bottom: #{$i * 2}px !important;
+  }
+
+  .px-#{$i * 2} {
+    @extend .pl-#{$i * 2};
+    @extend .pr-#{$i * 2};
+  }
+  .py-#{$i * 2} {
+    @extend .pt-#{$i * 2};
+    @extend .pb-#{$i * 2};
+  }
+
+  .p-#{$i * 2} {
+    @extend .px-#{$i * 2};
+    @extend .py-#{$i * 2};
+  }
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.ng-animate .ng-hide-add {
+  &,
+  &-active {
+    display: none;
+  }
+}
+
+.sk-folding-cube {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  transform: rotateZ(45deg);
+
+  &.index-loading-spinner {
+    position: fixed;
+    top: calc(50% - 20px);
+    left: calc(50% - 20px);
+  }
+
+  .sk-cube {
+    float: left;
+    width: 50%;
+    height: 50%;
+    position: relative;
+    transform: scale(1.1);
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: use-rgb(primary);
+      animation: sk-fold-cube-angle 2.4s infinite linear both;
+      transform-origin: 100% 100%;
+    }
+  }
+
+  .sk-cube2 {
+    transform: scale(1.1) rotateZ(90deg);
+
+    &:before {
+      animation-delay: 0.3s;
+    }
+  }
+
+  .sk-cube3 {
+    transform: scale(1.1) rotateZ(180deg);
+
+    &:before {
+      animation-delay: 0.6s;
+    }
+  }
+
+  .sk-cube4 {
+    transform: scale(1.1) rotateZ(270deg);
+
+    &:before {
+      animation-delay: 0.9s;
+    }
+  }
+}
+
+@keyframes sk-fold-cube-angle {
+  from,
+  10% {
+    transform: perspective(140px) rotateX(-180deg);
+    opacity: 0;
+  }
+
+  25%,
+  75% {
+    transform: perspective(140px) rotateX(0deg);
+    opacity: 1;
+  }
+
+  90%,
+  to {
+    transform: perspective(140px) rotateY(180deg);
+    opacity: 0;
+  }
+}
+
+.acl-inline-select {
+  .date-range-picker {
+    border: none;
+  }
+
+  &--large {
+    @include inline-select;
+
+    > label {
+      font-size: use-var(font-size-l);
+    }
+
+    .aui-input {
+      &--large,
+      &-group--large {
+        height: calc(#{use-var(inline-height-l)} - 2px);
+      }
+    }
+  }
+
+  &,
+  &--medium {
+    @include inline-select;
+
+    > label {
+      font-size: use-var(font-size-m);
+    }
+
+    .aui-input {
+      &--medium,
+      &-group--medium {
+        height: calc(#{use-var(inline-height-m)} - 2px);
+      }
+    }
+  }
+
+  &--small {
+    @include inline-select;
+
+    > label {
+      font-size: use-var(font-size-m);
+    }
+
+    .aui-input {
+      &--small,
+      &-group--small {
+        height: calc(#{use-var(inline-height-s)} - 2px);
+      }
+    }
+  }
+
+  &--mini {
+    @include inline-select;
+
+    > label {
+      font-size: use-var(font-size-s);
+    }
+
+    .aui-input {
+      &--mini,
+      &-group--mini {
+        height: calc(#{use-var(inline-height-xs)} - 2px);
+      }
+    }
+  }
+}
+
+// auiTable 独立存在或不依赖于其他组件， 吸附 table 列头
+.sticky-table-header {
+  @include sticky-header($page-header-height + $page-toolbar-height);
+}
+
+// auiTable 包含在 auiCard 中，同时吸附卡片头部和 table 列头
+.sticky-card_table-header {
+  @include sticky-header($page-header-height + $page-toolbar-height);
+
+  &.aui-card__header {
+    margin-top: -12px;
+    padding: 12px 0;
+    background-color: use-rgb(n-10);
+
+    + .aui-card__content {
+      margin: 0;
+
+      @include sticky-table-header(
+        $page-header-height + $page-toolbar-height + 56px
+      );
+    }
+  }
+}
+
+.aui-dialog {
+  aui-dialog-content.paltform-about-dialog {
+    &:first-child,
+    &:last-child {
+      .aui-dialog__content {
+        padding: 0;
+      }
+    }
+  }
+}
+
+aui-search,
+aui-select,
+aui-multi-select,
+aui-tree-select,
+aui-input-group,
+aui-number-input,
+aui-tags-input,
+aui-time-picker,
+aui-date-picker,
+aui-range-picker,
+aui-radio-group,
+aui-radio-button,
+acl-disabled-container,
+.acl-disabled-container {
+  // 解决父元素为 flex 布局时的高度问题
+  line-height: 0;
+
+  > * {
+    line-height: 1.43;
+  }
+}
+
+html[lang='zh'] {
+  --acl-form-item-label-width: 114px;
+}
+
+html[lang='en'] {
+  --acl-form-item-label-width: 144px;
+}
+
+.aui-form-item
+  .aui-form-item__label-wrapper:not(.aui-form-item__label-wrapper--top) {
+  width: var(--acl-form-item-label-width);
+}
+
+.fancy-scrollbar {
+  @include scroll-bar;
+}
+
+.card-shadow {
+  @include card-shadow;
+}
+
+.popper-shadow {
+  @include popper-shadow;
+}
+
+.ellipsis-dialog-header {
+  display: flex;
+  max-width: 464px;
+
+  .extra {
+    &:first-child {
+      margin-right: 4px;
+    }
+
+    &:last-child {
+      margin-left: 4px;
+    }
+  }
+}
+
+.text-overflow {
+  max-width: 100%;
+  @include text-overflow;
+}
+
+.ellipsis-dialog-header,
+.text-ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+}
+
+.text-btn:hover {
+  color: use-rgb(primary);
+  cursor: pointer;
+}
+
+.card-second-title {
+  &,
+  &.aui-card__header {
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+}
+
+// 默认列表页的搜索框的宽度是 260px
+.aui-card__header {
+  aui-search {
+    width: 260px;
+  }
+
+  aui-icon,
+  button,
+  aui-search,
+  aui-select {
+    font-weight: normal;
+  }
+
+  aui-icon {
+    font-size: initial;
+  }
+
+  .display-name {
+    @apply tw-flex tw-items-center tw-font-normal tw-text-m tw-overflow-hidden tw-overflow-ellipsis tw-text-help-text;
+
+    button {
+      @apply tw-ml-4;
+    }
+  }
+}
+
+@include array-form-table;
+
+@include table-placeholder('.empty-placeholder');
+
+@include acl-select-prefix;
+
+.aui-table__row + acl-k8s-resource-list-footer {
+  .empty-placeholder,
+  .table-placeholder {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.aui-table.acl-compact-table,
+.aui-dialog .aui-table {
+  .aui-table__row {
+    min-height: 50px;
+
+    .aui-checkbox {
+      height: unset;
+    }
+  }
+
+  .empty-placeholder,
+  .table-placeholder {
+    min-height: 52px;
+  }
+}
+
+a {
+  &.no-underline
+  // CSS level 4, not supprted by any browser at this moment
+  // , &:not(:has(button))
+  {
+    text-decoration: none;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+.tooltip-host {
+  font-size: use-var(icon-size-m);
+  color: use-text-color(help);
+
+  &:not(:first-child) {
+    margin-left: use-var(spacing-m);
+  }
+
+  &:hover,
+  &.isActive {
+    color: use-rgb(primary);
+  }
+}
+
+acl-field-set-item label .tooltip-host {
+  &:not(:first-child) {
+    margin-left: use-var(spacing-s);
+  }
+}
+
+.detail-page-fullheight {
+  @include detail-page-fullheight;
+}
+
+.yaml-form-page-fullheight {
+  @include detail-page-fullheight(28px); // 28px 是 yaml样例这行的盒子高度
+}
+
+aui-tooltip {
+  .acl-page-header__tooltip {
+    margin-top: 18px;
+
+    &--small {
+      margin-top: 20px;
+    }
+  }
+
+  .aui-tooltip.tooltip-single-line {
+    max-width: unset;
+    white-space: nowrap;
+  }
+}
+
+@include acl-table-in-table;
+
+.acl-info-table {
+  flex: 1;
+  width: 100%;
+  border-spacing: 0;
+
+  > tr > td {
+    vertical-align: middle;
+    padding: 4px;
+    line-height: 20px;
+    border: 12px solid use-rgb(n-9);
+
+    &:first-child {
+      padding-left: 8px;
+      width: 120px;
+      vertical-align: middle;
+      background-color: use-rgb(n-9);
+      text-align: center;
+      font-weight: use-var(font-weight-bold);
+      color: use-rgb(n-1);
+    }
+
+    &:last-child {
+      padding: 12px 12px 12px 20px;
+    }
+  }
+
+  &.plain {
+    > tr > td:first-child {
+      background-color: white;
+    }
+  }
+}
+
+.icon--error {
+  color: use-rgb(red);
+}
+
+.icon--warning {
+  color: use-rgb(yellow);
+}
+
+.icon {
+  &--help {
+    color: use-text-color(help);
+
+    &:hover {
+      color: use-rgb(primary);
+    }
+  }
+
+  &--secondary {
+    color: use-text-color(secondary);
+
+    &:hover {
+      color: use-rgb(primary);
+    }
+  }
+}
+
+.acl-colorful-icon {
+  @include colorful-icon;
+
+  &.highlight {
+    @include colorful-icon-highlight;
+  }
+
+  &.plain {
+    @include colorful-icon-plain;
+  }
+}
+
+.c-list > li:before {
+  content: '\26AC';
+}
+
+.d-list > li:before {
+  content: '\2022';
+}
+
+.s-list > li:before {
+  content: '\25AA';
+}
+
+.c,
+.d,
+.s {
+  &-list {
+    list-style: none;
+
+    > li {
+      display: flex;
+
+      &:before {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.last-form-item-no-margin > aui-form-item:last-of-type > .aui-form-item {
+  margin-bottom: 0;
+}
+
+aui-form-item.last-form-item-no-margin:last-of-type > .aui-form-item {
+  margin-bottom: 0;
+}
+
+aui-form-item.form-item-no-margin > .aui-form-item {
+  margin-bottom: 0;
+}
+
+aui-form-item {
+  &.plain-text .aui-form-item {
+    &__label-wrapper {
+      &,
+      &.hasLabel:after {
+        line-height: 20px;
+      }
+    }
+
+    &__content {
+      min-height: unset;
+      line-height: 20px;
+    }
+
+    &__addon-wrapper {
+      height: unset;
+    }
+  }
+}
+
+// remove unexpected empty margin-top
+.aui-form-item {
+  &__hint-wrapper,
+  &__error-wrapper {
+    acl-errors-mapper:empty {
+      margin-top: calc(0px - use-var(spacing-s));
+    }
+  }
+}
+
+.aui-table {
+  & &__cell,
+  & &__header-cell {
+    flex: 1 0 100px;
+
+    &-checkbox {
+      height: 44px;
+    }
+  }
+
+  & &__header-cell aui-icon[icon='basic:question'] {
+    margin-left: 4px;
+  }
+
+  & &__cell > span:not(:first-child, :empty) {
+    margin-left: 8px;
+  }
+
+  & &__cell {
+    &__name {
+      display: flex;
+      align-items: center;
+      max-width: 100%;
+
+      > {
+        a,
+        button,
+        div,
+        span {
+          flex: 1;
+          max-width: 240px;
+          @include text-overflow;
+        }
+      }
+
+      > :not(:first-child, :empty) {
+        margin-left: 4px;
+      }
+    }
+
+    &__display-name {
+      margin-top: 2px;
+      max-width: 100%;
+
+      @include text-overflow;
+      @include text-set(s, help);
+    }
+
+    &-expand-panel {
+      flex: 1;
+    }
+  }
+
+  & &__column {
+    &-name,
+    &-belonging_app,
+    &-references_cron_job &-storageclass,
+    &-belonged_vm {
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      flex: 2 0 140px;
+
+      > {
+        a,
+        button,
+        div,
+        span {
+          @include text-overflow;
+        }
+      }
+    }
+
+    &-creationTimestamp,
+    &-create_time,
+    &-update_time,
+    &-updated_time,
+    &-created_time,
+    &-createTime {
+      display: flex;
+      flex: 0 0 108px;
+
+      @include lang-en {
+        flex: 0 0 125px;
+      }
+    }
+
+    &-ip_address {
+      flex: 1 0 132px;
+    }
+
+    &-resource_limit {
+      flex: 1 0 112px;
+    }
+
+    &-action {
+      flex: 0 0 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-checkbox {
+      flex: 0 0 36px;
+      align-items: center;
+      overflow: hidden;
+      display: flex;
+
+      .aui-checkbox {
+        margin-right: 0;
+        height: 24px;
+      }
+    }
+  }
+}
+
+aui-form-item,
+.aui-section,
+.aui-dialog {
+  .acl-array-form-table {
+    &__readonly-mode {
+      tbody {
+        tr {
+          height: 50px;
+        }
+      }
+    }
+  }
+}
+
+aui-form-item.form-item {
+  &__no-label .aui-form-item {
+    &__label-wrapper {
+      display: none;
+    }
+  }
+
+  &__no-mb .aui-form-item {
+    margin-bottom: 0;
+  }
+
+  &__td-control {
+    .aui-form-item {
+      margin-bottom: 0;
+
+      &__label-wrapper,
+      &__addon-wrapper {
+        display: none;
+      }
+    }
+  }
+}
+
+// 使用 flex 布局进行列宽控制
+.form-table__flex-layout {
+  .acl-array-form-table {
+    tr {
+      display: flex;
+    }
+
+    th,
+    td {
+      flex: 1;
+
+      &.acl-array-form-table__action-col {
+        // 单个操作符时的 cell 容器宽度，其他定制情况应当覆盖此 flexBasis
+        flex: 0 0 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  &.inline-action-col .acl-array-form-table {
+    th,
+    td {
+      &.acl-array-form-table__action-col {
+        align-items: flex-start;
+      }
+    }
+  }
+}
+
+.acl-secondary-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: use-var(spacing-xl);
+  font-weight: use-var(font-weight-bold);
+  @include text-set(l, main);
+
+  &:before {
+    content: '';
+    display: block;
+    margin-right: use-var(spacing-m);
+    height: 16px;
+    width: 4px;
+    border-radius: 2px;
+    background-color: use-rgb(primary);
+  }
+}
+
+.check-triangle__prb {
+  @apply tw-absolute tw-right-0 tw-bottom-0 tw-text-[white] tw-text-[23px];
+}

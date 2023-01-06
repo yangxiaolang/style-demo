@@ -1,0 +1,23 @@
+$page-min-width: 1200px;
+
+$page-header-height: 60px;
+$page-toolbar-height: 44px;
+$page-sider-width: 220px;
+$page-sider-collapse-width: 40px;
+$page-sider-footer-height: 60px;
+$page-sider-collapse-icon-translate-x: -8px;
+$page-sider-collapse-selector: '.sidenav-collapse';
+$page-sider-ani-selector: '.sidenav-ani';
+$page-padding-m: 20px;
+$page-padding-s: 16px;
+
+$fixed-form-footer-height: 64px;
+
+$border-scale-width: 4px;
+$border-transition: all 0.2s ease-in-out;
+$border-scale-radius: 4px;
+
+$ease-in-out: cubic-bezier(0.38, 0, 0.24, 1);
+$transition-duration-s: 0.3s; // 最慢
+$transition-duration-m: 0.24s; // 适中
+$transition-duration-f: 0.2s; // 最快

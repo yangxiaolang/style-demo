@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+// @import 'var';
+// @import 'mixins';
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import './styles/var';
+@import './styles/mixins';
+@import './styles/global.scss';
+
+app-root{
+    @include app-root;
+}

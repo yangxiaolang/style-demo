@@ -1,0 +1,647 @@
+// stylelint-disable no-descending-specificity
+@import 'node_modules/@alauda/ui/theme/var';
+@import 'node_modules/@alauda/ui/theme/mixin';
+@import 'node_modules/@alauda/ui/theme/pattern';
+@import './var';
+
+@mixin app-root {
+  display: block;
+  width: 100%;
+  z-index: 1;
+}
+
+@mixin fixed-form-container {
+  display: block;
+  margin-bottom: $fixed-form-footer-height;
+}
+
+// 切换侧边栏状态时会导致布局变更，可以使用这个mixin使过渡更自然
+@mixin sidenav-transition($props...) {
+  transition: $props;
+  transition-duration: $transition-duration-s;
+  transition-timing-function: $ease-in-out;
+}
+
+@mixin fixed-form-footer {
+  position: fixed;
+  right: $page-padding-m;
+  bottom: 0;
+  z-index: 110;
+  height: $fixed-form-footer-height;
+  padding: 0 20px;
+  border-top-left-radius: use-var(border-radius-l);
+  border-top-right-radius: use-var(border-radius-l);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: use-rgb(n-10);
+  @include card-shadow;
+
+  left: $page-sider-width + $page-padding-m * 2;
+
+  @at-root {
+    #{selector-nest($page-sider-collapse-selector, &)} {
+      left: $page-sider-collapse-width + $page-padding-m * 2;
+    }
+
+    #{selector-nest($page-sider-ani-selector, &)} {
+      @include sidenav-transition(left);
+    }
+  }
+}
+
+@mixin array-form-table {
+  .acl-array-form-table {
+    flex: 1;
+    width: 100%;
+    border-spacing: 0;
+    border: 12px solid use-rgb(n-9);
+    border-radius: 2px;
+    border-collapse: unset;
+
+    thead {
+      background-color: use-rgb(n-9);
+
+      th,
+      td {
+        line-height: 20px;
+        color: use-rgb(n-1);
+        text-align: left;
+        font-weight: 500;
+        padding: 0 0 12px 8px;
+
+        &[required]:before {
+          content: '*';
+          color: use-rgb(red);
+          margin-right: 4px;
+        }
+      }
+    }
+
+    tbody {
+      > tr {
+        background-color: use-rgb(n-10);
+        border-radius: 2px;
+
+        &:first-child {
+          > td {
+            border-top: unset;
+          }
+        }
+      }
+
+      td {
+        padding: 8px 0 8px 8px;
+        border-top: 8px solid use-rgb(n-9);
+        vertical-align: middle;
+
+        &:last-child {
+          padding: 8px;
+        }
+      }
+    }
+
+    tr.acl-array-form-table__row-error {
+      background-color: rgb(var(--aui-color-r-6));
+    }
+
+    tr.acl-array-form-table--row-action {
+      td {
+        padding: unset;
+        border-bottom: unset;
+        padding-bottom: unset;
+      }
+    }
+
+    th.acl-array-form-table__action-col {
+      min-width: 48px;
+    }
+
+    /* We have a convention here that the last column is the action column */
+    td.acl-array-form-table__action-col {
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      width: 24px;
+
+      .aui-button--text.isPlain {
+        font-size: 16px;
+      }
+
+      /* customized style */
+      .action-col__vertical {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* customized style */
+    tbody td.acl-table-form-error-hint {
+      // 上一行 padding-bottom 为 8px，这里我们希望错误内容与控件间距为 4px
+      margin-top: -4px;
+      border-top: none;
+      padding-top: 0;
+      color: use-rgb(red);
+      font-size: 12px;
+
+      acl-errors-mapper .acl-error-hint {
+        margin-top: 0;
+      }
+    }
+
+    &__bottom-control-buttons {
+      display: flex;
+      width: 100%;
+      background-color: use-rgb(n-9);
+
+      .aui-button {
+        flex: 1;
+
+        &--default {
+          color: use-text-color(secondary);
+        }
+
+        &:not([disabled]) {
+          background-color: use-rgb(n-10);
+
+          &:hover {
+            background-color: use-rgb(p-6);
+          }
+
+          &:active {
+            background-color: use-rgb(p-5);
+          }
+        }
+
+        &.aui-button--primary.isPlain[disabled] {
+          background-color: use-rgb(n-8);
+          color: use-rgb(n-6);
+        }
+
+        border-style: unset;
+        font-size: 14px;
+        height: 28px;
+        border-radius: 2px;
+
+        aui-icon {
+          font-size: 16px;
+        }
+      }
+    }
+
+    &__readonly-mode {
+      border-radius: use-var(border-radius-l);
+      border-collapse: separate;
+
+      th,
+      td {
+        .aui-checkbox {
+          margin: unset;
+        }
+      }
+
+      thead {
+        tr {
+          th,
+          td {
+            padding: 0 10px 12px;
+
+            &:first-child {
+              padding-left: 20px;
+            }
+
+            &:last-child {
+              padding-right: 20px;
+            }
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          height: 58px;
+
+          td {
+            padding: 15px 10px;
+            border: 1px solid use-rgb(n-8);
+            border-bottom-width: 0;
+
+            &:not(:last-child) {
+              border-right: none;
+            }
+
+            &:not(:first-child) {
+              border-left: none;
+            }
+
+            &:first-child {
+              padding-left: 19px;
+            }
+
+            &:last-child {
+              padding: 15px 19px 15px 10px;
+            }
+          }
+        }
+
+        tr:last-child {
+          td {
+            border-bottom-width: 1px;
+          }
+
+          td:first-child {
+            border-bottom-left-radius: use-var(border-radius-l);
+          }
+
+          td:last-child {
+            border-bottom-right-radius: use-var(border-radius-l);
+          }
+        }
+
+        tr:first-child {
+          td {
+            border-top: 1px solid use-rgb(n-8);
+          }
+
+          td:first-child {
+            border-top-left-radius: use-var(border-radius-l);
+          }
+
+          td:last-child {
+            border-top-right-radius: use-var(border-radius-l);
+          }
+        }
+      }
+    }
+
+    &__action-col-divider {
+      border-left: 1px solid use-rgb(n-8);
+    }
+  }
+}
+
+@mixin inline-select {
+  display: inline-flex;
+  align-items: center;
+  border-radius: use-var(border-radius-m);
+  border: 1px solid use-rgb(border);
+  background-color: use-rgb(n-9);
+  padding-left: 8px;
+
+  &:hover {
+    border-color: use-rgb(primary);
+  }
+
+  &:focus,
+  &.isFocused {
+    border-color: use-rgb(primary);
+    @include outline-shadow(primary);
+  }
+
+  > label {
+    font-size: use-var(font-size-m);
+    font-weight: use-var(font-weight-normal);
+    color: use-text-color(help);
+    white-space: nowrap;
+  }
+
+  .aui-input {
+    border: 0;
+
+    &:focus,
+    &.isFocused {
+      border: none;
+      box-shadow: none !important;
+    }
+
+    height: calc(#{use-var(inline-height-m)} - 2px);
+  }
+}
+
+@mixin sticky-header($top) {
+  position: sticky;
+  z-index: 1;
+  top: $top;
+}
+
+@mixin sticky-table-header($top) {
+  > .aui-table > .aui-table__header-row {
+    @include sticky-header($top);
+  }
+}
+
+@mixin detail-page-fullheight($gap: 0) {
+  display: block;
+  height: calc(
+    100vh - #{$page-header-height + $page-toolbar-height + 125px + 16px + 20px +
+      $gap}
+  );
+
+  > .aui-card {
+    height: 100%;
+
+    .aui-card__content,
+    aui-code-editor,
+    .aui-code-editor {
+      height: 100%;
+      min-height: 100%;
+    }
+  }
+}
+
+// 通用创建/更新页，撑屏内容高度
+@mixin create-page-fullheight__card($hasSample: false) {
+  $height: calc(
+    100vh - #{$page-header-height + $page-toolbar-height + 20px + 32px + 16px +
+      1px + 16px + 20px + 20px + $fixed-form-footer-height}
+  );
+  @if $hasSample == true {
+    $height: calc(
+      100vh -
+        #{$page-header-height +
+        $page-toolbar-height +
+        20px +
+        32px +
+        16px +
+        1px +
+        16px +
+        20px +
+        20px +
+        15px +
+        $fixed-form-footer-height}
+    );
+  }
+
+  display: block;
+  height: $height;
+  min-height: $height;
+
+  aui-code-editor,
+  .aui-code-editor {
+    height: 100%;
+    min-height: 100%;
+  }
+}
+
+// 创建页，无card-header时撑屏内容高度
+@mixin create-page-fullheight__content {
+  height: calc(
+    100vh - #{$page-header-height + $page-toolbar-height + 20px + 20px + 20px +
+      $fixed-form-footer-height}
+  );
+}
+
+@mixin bicolor($main, $secondary) {
+  --bicolor-main: #{$main};
+  --bicolor-secondary: #{$secondary};
+}
+
+@mixin table-row-placeholder-extend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  @include text-set(m, help);
+}
+
+@mixin acl-select-prefix {
+  aui-select .acl-select-prefix__wrapper {
+    &.isOpened,
+    &:hover:not(.isDisabled) {
+      border-color: use-rgb(primary);
+    }
+
+    &.isOpened {
+      @include outline-shadow(primary);
+    }
+
+    &.isDisabled {
+      .acl-select-prefix__label {
+        background-color: use-rgb(n-8);
+        border-color: use-rgb(n-7);
+      }
+    }
+
+    display: flex;
+    border: 1px solid use-rgb(border);
+    border-radius: use-var(border-radius-m);
+    overflow-y: hidden;
+
+    aui-input-group {
+      flex: 1;
+      margin-block: -1px;
+    }
+
+    .aui-input {
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .acl-select-prefix__label {
+      order: -1;
+      display: inline-flex;
+      align-items: center;
+      background-color: use-rgb(n-9);
+      padding-left: 8px;
+      font-size: 14px;
+      color: use-rgb(n-4);
+      white-space: nowrap;
+    }
+  }
+
+  aui-multi-select {
+    .acl-select-prefix__label {
+      color: use-rgb(n-4);
+      margin-right: 8px;
+    }
+  }
+
+  aui-select.ng-invalid.ng-dirty,
+  .ng-submitted aui-select.ng-invalid {
+    .acl-select-prefix__wrapper {
+      @include input-error;
+
+      &.isOpened {
+        @include outline-shadow(red);
+      }
+
+      &:hover:not(.isOpened) {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+@mixin acl-table-in-table {
+  .acl-table-in-table {
+    width: calc(100% + 16px);
+    margin-left: -8px;
+    margin-right: -8px;
+
+    td,
+    th {
+      line-height: 20px;
+      padding: 8px;
+      border-bottom: 1px solid use-rgb(n-8);
+      text-align: left;
+    }
+
+    thead {
+      td,
+      th {
+        padding-top: 0;
+        color: use-rgb(n-4);
+      }
+    }
+
+    tbody,
+    tfoot {
+      td {
+        color: use-rgb(n-1);
+      }
+
+      > tr:last-child {
+        td {
+          padding-bottom: 0;
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+// 选中的产品和选中命名空间的背景颜色
+@mixin select-background {
+  background-color: use-rgb(primary);
+  border-color: use-rgb(primary);
+  color: white;
+  cursor: default;
+
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+// hover的时候，边框的top，right，bottom，left都向外4px，default和hover要一起使用
+// 分两个方法的原因：有些场景只需要用到边框，不需要hover放大
+// 默认状态和禁用状态。加disabled类名可以成为禁用状态
+@mixin scale-on-default-disabled {
+  position: relative;
+
+  &:after {
+    position: absolute;
+    content: '';
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 1px solid use-rgb(n-7);
+    border-radius: $border-scale-radius;
+    pointer-events: none;
+    transition: $border-transition;
+  }
+
+  &.disabled {
+    background-color: use-rgb(n-8);
+    color: use-rgb(n-6);
+    cursor: not-allowed;
+  }
+}
+// hover状态和选中状态
+@mixin scale-on-hover-active {
+  &:hover {
+    &:after {
+      top: -$border-scale-width;
+      right: -$border-scale-width;
+      bottom: -$border-scale-width;
+      left: -$border-scale-width;
+      border-color: use-rgb(primary);
+      box-shadow: inset 0 0 0 $border-scale-width use-rgb(n-10),
+        0 0 2 * $border-scale-width 0 use-rgba(primary, 0.5);
+    }
+  }
+
+  &:active {
+    &:after {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      box-shadow: 0 0 $border-scale-width 0 use-rgba(primary, 0.5);
+    }
+  }
+}
+// 合并上面的两个方法，参数是hover后不需要放大的选择器，如果参数是类名选择器可以用引号括起来
+@mixin scale-on-hover($disabled: '.disabled') {
+  @include scale-on-default-disabled;
+
+  &:not(#{$disabled}) {
+    @include scale-on-hover-active;
+  }
+}
+
+@mixin page-color-definition {
+  :root {
+    --acl-page-header-background-color: #{use-rgb(n-10)};
+    --acl-page-header-title-color: #{use-rgb(n-1)};
+    --acl-page-header-text-color: #{use-rgb(n-2)};
+    --acl-nav-background-color: #{use-rgb(main-bg)};
+    --acl-nav-active-text-color: #{use-rgb(primary)};
+    --acl-nav-active-background-color: #{use-rgb(p-5)};
+    --acl-nav-popper-background-color: #{use-rgb(popper-bg)};
+    --acl-icon-color-memory: #00b2d6;
+    --acl-icon-color-cpu: #5200f5;
+    --acl-icon-color-storage: #8bce27;
+  }
+}
+
+@mixin colorful-icon() {
+  @include theme-light {
+    @include bicolor(use-rgb(primary), use-rgb(p-3));
+  }
+
+  @include theme-dark {
+    @include bicolor(use-rgb(primary), use-rgb(p-3));
+  }
+}
+
+@mixin colorful-icon-highlight() {
+  @include theme-light {
+    @include bicolor(white, use-rgb(p-4));
+  }
+
+  @include theme-dark {
+    @include bicolor(white, #b3d7fc);
+  }
+}
+
+@mixin colorful-icon-plain() {
+  @include theme-light {
+    @include bicolor(use-rgb(n-3), use-rgb(n-5));
+  }
+
+  @include theme-dark {
+    @include bicolor(use-rgb(n-3), use-rgb(n-5));
+  }
+}
+
+@mixin co-line-clamp($lines: 3) {
+  // stylelint-disable-next-line
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+}
+
+@mixin lang-en {
+  $scope: &;
+
+  @at-root {
+    #{selector-nest('html[lang=en]', $scope)} {
+      @content;
+    }
+  }
+}

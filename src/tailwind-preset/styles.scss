@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .tw-question {
+    @apply tw-text-n-4 tw-cursor-pointer hover:tw-text-primary;
+  }
+
+  .tw-required-mark {
+    @apply before:tw-content-['*'] before:tw-mr-s before:tw-text-[#eb6262];
+  }
+
+  .tw-text-overflow {
+    @apply tw-whitespace-nowrap tw-overflow-hidden tw-text-ellipsis;
+  }
+
+  .tw-before-disc {
+    @apply before:tw-content-['\2022'] before:tw-mr-4 before:tw-text-l before:tw-font-[900];
+  }
+}
